@@ -1,10 +1,13 @@
 import React from 'react';
 
+import GlobalStyle from './styles/globals';
+
 const App: React.FC = () => {
   return (
-    <div>
+    <>
+      <GlobalStyle />
       <h1>Hello World</h1>
-    </div>
+    </>
   );
 };
 
