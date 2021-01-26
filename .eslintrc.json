@@ -26,6 +26,7 @@
     ],
     "rules": {
       "react/prop-types": "off",
+      "@typescript-eslint/no-non-null-assertion": "off",
       "import/no-extraneous-dependencies": "off",
       "react/jsx-props-no-spreading": "off",
       "react-hooks/rules-of-hooks": "error",
