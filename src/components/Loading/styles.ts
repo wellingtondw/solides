@@ -22,4 +22,5 @@ export const Container = styled.div`
 
 export const Text = styled.p`
   margin-left: 8px;
+  color: #222;
 `;
