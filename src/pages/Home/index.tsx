@@ -10,10 +10,16 @@ import PatientModal from '../../components/PatientModal';
 import { MainContainer } from '../../styles/common';
 import api from '../../services/api';
 
-export type tableDataProps = {
+import * as S from './styles';
+
+export type tableResultProps = {
   name: { first: string; last: string };
   gender: string;
   registered: { date: string };
+};
+
+export type tableDataProps = {
+  value: string | React.Component;
 };
 
 const headers = [
@@ -31,37 +37,59 @@ const headers = [
   },
 ];
 
+const PER_PAGE = 50;
+
 const Home: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
-  const [page, setPage] = useState({
-    perPage: 50,
-    page: 1,
-  });
+  const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(1);
   const [results, setResults] = useState([]);
-  const [tableData, setTableData] = useState([]);
+  const [tableData, setTableData] = useState<tableDataProps[][]>([]);
 
   const handleGetData = useCallback(async () => {
-    const { perPage } = page;
-    const { data } = await api.get(`?results=${perPage}`);
+    setLoading(true);
+    const { data } = await api.get(`?page=${page}&results=${PER_PAGE}`);
 
-    const tableFormatData = data.results.map((result: tableDataProps) => {
+    const tableFormatData = data.results.map((result: tableResultProps) => {
       return [
         { value: `${result.name.first} ${result.name.last}` },
         { value: result.gender },
         { value: result.registered.date },
       ];
     });
+    const newArrTable = [...tableData, ...tableFormatData];
 
     setResults(data.results);
-    setTableData(tableFormatData);
+    setTableData(newArrTable);
+    setLoading(false);
   }, [page]);
+
+  console.log('tableData', tableData);
+
+  const handleScroll = useCallback(() => {
+    if (
+      window.innerHeight + document.documentElement.scrollTop <
+        document.documentElement.offsetHeight ||
+      loading
+    ) {
+      return;
+    }
+
+    setPage(page + 1);
+  }, [page, setPage, loading]);
 
   useEffect(() => {
     handleGetData();
-  }, [handleGetData]);
+  }, [handleGetData, page]);
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [handleScroll]);
 
   return (
-    <>
+    <S.Container>
       <PatientModal
         showModal={showModal}
         handleCloseModal={() => setShowModal(false)}
@@ -73,9 +101,9 @@ const Home: React.FC = () => {
           handleSearch={() => setShowModal(true)}
         />
         <Table headers={headers} data={tableData} />
-        <Loading />
+        {loading && <Loading />}
       </MainContainer>
-    </>
+    </S.Container>
   );
 };
 

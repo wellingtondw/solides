@@ -16,17 +16,17 @@ const Table: React.FC<TableProps> = ({ headers, data, ...rest }) => {
     <S.Table {...rest}>
       <S.Head>
         <S.Row>
-          {headers.map(header => (
-            <S.TableHead>{header.text}</S.TableHead>
+          {headers.map((header, index) => (
+            <S.TableHead key={index}>{header.text}</S.TableHead>
           ))}
         </S.Row>
       </S.Head>
       <S.Body>
-        {data.map(row => {
+        {data.map((row, index) => {
           return (
-            <S.Row>
-              {row.map(cell => (
-                <S.TableData>{cell.value}</S.TableData>
+            <S.Row key={index}>
+              {row.map((cell, i) => (
+                <S.TableData key={i}>{cell.value}</S.TableData>
               ))}
             </S.Row>
           );
