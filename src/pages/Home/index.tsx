@@ -9,7 +9,7 @@ import PatientModal from '../../components/PatientModal';
 import { MainContainer } from '../../styles/common';
 
 const Home: React.FC = () => {
-  const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState(true);
 
   return (
     <>
