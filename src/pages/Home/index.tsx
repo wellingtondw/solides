@@ -64,13 +64,12 @@ const Home: React.FC = () => {
     setLoading(false);
   }, [page]);
 
-  console.log('tableData', tableData);
-
   const handleScroll = useCallback(() => {
     if (
       window.innerHeight + document.documentElement.scrollTop <
         document.documentElement.offsetHeight ||
-      loading
+      loading ||
+      results.length < 50
     ) {
       return;
     }
