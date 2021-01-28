@@ -2,47 +2,35 @@ import React from 'react';
 
 import * as S from './styles';
 
-const Table: React.FC = () => {
+export type TableProps = {
+  headers: {
+    text: string;
+  }[];
+  data: {
+    value: string | React.Component;
+  }[][];
+};
+
+const Table: React.FC<TableProps> = ({ headers, data, ...rest }) => {
   return (
-    <S.Table>
+    <S.Table {...rest}>
       <S.Head>
         <S.Row>
-          <S.TableHead>Header content 1</S.TableHead>
-          <S.TableHead>Header content 2</S.TableHead>
-          <S.TableHead>Header content 3</S.TableHead>
+          {headers.map(header => (
+            <S.TableHead>{header.text}</S.TableHead>
+          ))}
         </S.Row>
       </S.Head>
       <S.Body>
-        <S.Row>
-          <S.TableData>Body content 1</S.TableData>
-          <S.TableData>Body content 2</S.TableData>
-          <S.TableData>Body content 3</S.TableData>
-        </S.Row>
-        <S.Row>
-          <S.TableData>Body content 1</S.TableData>
-          <S.TableData>Body content 2</S.TableData>
-          <S.TableData>Body content 3</S.TableData>
-        </S.Row>
-        <S.Row>
-          <S.TableData>Body content 1</S.TableData>
-          <S.TableData>Body content 2</S.TableData>
-          <S.TableData>Body content 3</S.TableData>
-        </S.Row>
-        <S.Row>
-          <S.TableData>Body content 1</S.TableData>
-          <S.TableData>Body content 2</S.TableData>
-          <S.TableData>Body content 3</S.TableData>
-        </S.Row>
-        <S.Row>
-          <S.TableData>Body content 1</S.TableData>
-          <S.TableData>Body content 2</S.TableData>
-          <S.TableData>Body content 3</S.TableData>
-        </S.Row>
-        <S.Row>
-          <S.TableData>Body content 1</S.TableData>
-          <S.TableData>Body content 2</S.TableData>
-          <S.TableData>Body content 3</S.TableData>
-        </S.Row>
+        {data.map(row => {
+          return (
+            <S.Row>
+              {row.map(cell => (
+                <S.TableData>{cell.value}</S.TableData>
+              ))}
+            </S.Row>
+          );
+        })}
       </S.Body>
     </S.Table>
   );
