@@ -14,7 +14,7 @@ export const Overlay = styled.div<ModalProps>`
     height: 100vh;
     background-color: rgba(0, 0, 0, 0.3);
     z-index: 9;
-    transition: opacity 0.3s linear;
+    transition: opacity 0.4s ease-in;
     opacity: ${showModal ? 1 : 0};
     visibility: ${showModal ? 'auto' : 'hidden'};
   `}

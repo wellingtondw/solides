@@ -7,7 +7,7 @@ export type TableProps = {
     text: string;
   }[];
   data: {
-    value: string | React.Component;
+    value: string | React.ReactNode;
   }[][];
 };
 

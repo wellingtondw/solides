@@ -1,97 +1,85 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
-import { table } from 'console';
 import Header from '../../components/Header';
 import Input from '../../components/Input';
-import Table from '../../components/Table';
 import Loading from '../../components/Loading';
-import PatientModal from '../../components/PatientModal';
+import PatientModal, { ModalDataProps } from '../../components/PatientModal';
+import UserTable from '../../components/UserTable';
 
 import { MainContainer } from '../../styles/common';
-import api from '../../services/api';
 
 import * as S from './styles';
-
-export type tableResultProps = {
-  name: { first: string; last: string };
-  gender: string;
-  registered: { date: string };
-};
-
-export type tableDataProps = {
-  value: string | React.Component;
-};
-
-const headers = [
-  {
-    text: 'Name',
-  },
-  {
-    text: 'Gender',
-  },
-  {
-    text: 'Birth',
-  },
-  {
-    text: 'Actions',
-  },
-];
 
 const PER_PAGE = 50;
 
 const Home: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [page, setPage] = useState(1);
-  const [results, setResults] = useState([]);
-  const [tableData, setTableData] = useState<tableDataProps[][]>([]);
+  // const [page, setPage] = useState(1);
+  // const [results, setResults] = useState([]);
+  // const [modalData, setModalData] = useState<ModalDataProps>({
+  //   address: '',
+  //   birthDate: '',
+  //   email: '',
+  //   gender: '',
+  //   id: '',
+  //   image: '',
+  //   name: '',
+  //   nationality: '',
+  //   tel: '',
+  // });
 
-  const handleGetData = useCallback(async () => {
-    setLoading(true);
-    const { data } = await api.get(`?page=${page}&results=${PER_PAGE}`);
+  // const handleShowModal = useCallback(result => {
+  //   setShowModal(true);
 
-    const tableFormatData = data.results.map((result: tableResultProps) => {
-      return [
-        { value: `${result.name.first} ${result.name.last}` },
-        { value: result.gender },
-        { value: result.registered.date },
-      ];
-    });
-    const newArrTable = [...tableData, ...tableFormatData];
+  //   console.log('Result', result);
 
-    setResults(data.results);
-    setTableData(newArrTable);
-    setLoading(false);
-  }, [page]);
+  //   setModalData({
+  //     image: result.picture.large,
+  //     address: `${result.location.street.name}, ${result.location.street.number}`,
+  //     birthDate: 'asd',
+  //     email: result.email,
+  //     gender: result.gender,
+  //     id: result.login.uuid,
+  //     name: `${result.name.first} ${result.name.last}`,
+  //     nationality: 'asda',
+  //     tel: 'asda',
+  //   });
+  // }, []);
 
-  const handleScroll = useCallback(() => {
-    if (
-      window.innerHeight + document.documentElement.scrollTop <
-        document.documentElement.offsetHeight ||
-      loading ||
-      results.length < 50
-    ) {
-      return;
-    }
+  // const handleScroll = useCallback(() => {
+  //   if (
+  //     window.innerHeight + document.documentElement.scrollTop <
+  //       document.documentElement.offsetHeight ||
+  //     loading ||
+  //     results.length < 50
+  //   ) {
+  //     return;
+  //   }
 
-    setPage(page + 1);
-  }, [page, setPage, loading]);
+  //   setPage(page + 1);
+  // }, [page, setPage, loading]);
 
-  useEffect(() => {
-    handleGetData();
-  }, [handleGetData, page]);
+  // useEffect(() => {
+  //   window.addEventListener('scroll', handleScroll);
 
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [handleScroll]);
+  //   return () => window.removeEventListener('scroll', handleScroll);
+  // }, [handleScroll]);
 
   return (
     <S.Container>
       <PatientModal
         showModal={showModal}
         handleCloseModal={() => setShowModal(false)}
+        address="modalData.address"
+        birthDate="modalData.birthDate"
+        email="modalData.email"
+        gender="modalData.gender"
+        id="modalData.id"
+        image="modalData.image"
+        name="modalData.name"
+        nationality="modalData.nationality"
+        tel="modalData.tel"
       />
       <Header />
       <MainContainer>
@@ -99,7 +87,7 @@ const Home: React.FC = () => {
           placeholder="Pesquisar..."
           handleSearch={() => setShowModal(true)}
         />
-        <Table headers={headers} data={tableData} />
+        <UserTable />
         {loading && <Loading />}
       </MainContainer>
     </S.Container>

@@ -27,7 +27,7 @@ export const LeftContainer = styled.div`
   align-items: center;
 `;
 
-export const UserIconContainer = styled.div`
+export const ImageContainer = styled.div`
   width: 120px;
   height: 120px;
   border-radius: 50%;
@@ -40,6 +40,11 @@ export const UserIconContainer = styled.div`
   top: -60px;
   left: 50%;
   transform: translateX(-50%);
+`;
+
+export const Image = styled.img`
+  width: 100%;
+  border-radius: 50%;
 `;
 
 export const RightContainer = styled.div`
