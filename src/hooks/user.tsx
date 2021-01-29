@@ -1,11 +1,6 @@
 import React, { createContext, useContext, useCallback, useState } from 'react';
 import api from '../services/api';
 
-interface Pagination {
-  page: number;
-  perPage: number;
-}
-
 export interface Results {
   name: {
     first: string;
@@ -18,29 +13,42 @@ export interface Results {
 }
 
 interface UserContextData {
-  handleGetUserInfo(data: Pagination): Promise<void>;
+  handleGetUserInfo(): Promise<void>;
   results: Results[];
   loading: boolean;
+  page: number;
+  perPage: number;
+  setPage(p: number): void;
 }
+
+const PER_PAGE = 50;
 
 const UserContext = createContext<UserContextData>({} as UserContextData);
 
 const UserProvider: React.FC = ({ children }) => {
-  const [results, setResults] = useState([]);
+  const [results, setResults] = useState<Results[]>([]);
   const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(1);
 
-  const handleGetUserInfo = useCallback(async ({ page, perPage }) => {
+  const handleGetUserInfo = useCallback(async () => {
     setLoading(true);
-    const { data } = await api.get(`?page=${page}&results=${perPage}`);
+    const { data } = await api.get(`?page=${page}&results=${PER_PAGE}`);
 
-    console.log('data', data);
-
-    setResults(data.results);
+    setResults([...results, ...data.results]);
     setLoading(false);
-  }, []);
+  }, [page]);
 
   return (
-    <UserContext.Provider value={{ handleGetUserInfo, results, loading }}>
+    <UserContext.Provider
+      value={{
+        handleGetUserInfo,
+        results,
+        loading,
+        perPage: 50,
+        page,
+        setPage,
+      }}
+    >
       {children}
     </UserContext.Provider>
   );

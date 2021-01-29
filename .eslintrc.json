@@ -25,13 +25,14 @@
         "prettier"
     ],
     "rules": {
+      "@typescript-eslint/explicit-module-boundary-types": "off",
       "react/no-array-index-key": "off",
       "react/prop-types": "off",
       "@typescript-eslint/no-non-null-assertion": "off",
       "import/no-extraneous-dependencies": "off",
       "react/jsx-props-no-spreading": "off",
       "react-hooks/rules-of-hooks": "error",
-      "react-hooks/exhaustive-deps": "warn",
+      "react-hooks/exhaustive-deps": "off",
       "react/jsx-filename-extension": [1, { "extensions": [".tsx"] }],
       "import/prefer-default-export": "off",
       "camelcase": "off",

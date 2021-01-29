@@ -1,22 +1,19 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import { useUser } from '../../hooks/user';
 
 import Header from '../../components/Header';
 import Input from '../../components/Input';
 import Loading from '../../components/Loading';
-import PatientModal, { ModalDataProps } from '../../components/PatientModal';
+import PatientModal from '../../components/PatientModal';
 import UserTable from '../../components/UserTable';
 
 import { MainContainer } from '../../styles/common';
 
 import * as S from './styles';
 
-const PER_PAGE = 50;
-
 const Home: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
-  const [loading, setLoading] = useState(false);
-  // const [page, setPage] = useState(1);
-  // const [results, setResults] = useState([]);
+  const { loading } = useUser();
   // const [modalData, setModalData] = useState<ModalDataProps>({
   //   address: '',
   //   birthDate: '',
@@ -46,25 +43,6 @@ const Home: React.FC = () => {
   //     tel: 'asda',
   //   });
   // }, []);
-
-  // const handleScroll = useCallback(() => {
-  //   if (
-  //     window.innerHeight + document.documentElement.scrollTop <
-  //       document.documentElement.offsetHeight ||
-  //     loading ||
-  //     results.length < 50
-  //   ) {
-  //     return;
-  //   }
-
-  //   setPage(page + 1);
-  // }, [page, setPage, loading]);
-
-  // useEffect(() => {
-  //   window.addEventListener('scroll', handleScroll);
-
-  //   return () => window.removeEventListener('scroll', handleScroll);
-  // }, [handleScroll]);
 
   return (
     <S.Container>

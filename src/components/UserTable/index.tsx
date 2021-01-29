@@ -27,7 +27,35 @@ const headers = [
 
 const UserTable: React.FC = () => {
   const [data, setData] = useState<tableDataProps[][]>([]);
-  const { handleGetUserInfo, results } = useUser();
+  const {
+    handleGetUserInfo,
+    results,
+    loading,
+    page,
+    setPage,
+    perPage,
+  } = useUser();
+
+  const handleScroll = () => {
+    if (
+      window.innerHeight + document.documentElement.scrollTop <
+        document.documentElement.offsetHeight ||
+      loading ||
+      results.length < perPage
+    ) {
+      return;
+    }
+
+    setPage(page + 1);
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [handleScroll]);
 
   const handleFormatTableData = useCallback(() => {
     const formatTableData = results.map(result => {
@@ -45,16 +73,11 @@ const UserTable: React.FC = () => {
       ];
     });
 
-    const newArrTable = [...data, ...formatTableData];
-
-    setData(newArrTable);
+    setData(formatTableData);
   }, [results]);
 
   useEffect(() => {
-    handleGetUserInfo({
-      page: 1,
-      perPage: 50,
-    });
+    handleGetUserInfo();
   }, [handleGetUserInfo]);
 
   useEffect(() => {
