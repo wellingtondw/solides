@@ -84,7 +84,15 @@ const UserTable: React.FC = () => {
     handleFormatTableData();
   }, [handleFormatTableData]);
 
-  return <Table headers={headers} data={data} />;
+  return (
+    <>
+      {data.length < 1 && !loading ? (
+        <S.Info>Nenhum resultado encontrado</S.Info>
+      ) : (
+        <Table headers={headers} data={data} />
+      )}
+    </>
+  );
 };
 
 export default UserTable;

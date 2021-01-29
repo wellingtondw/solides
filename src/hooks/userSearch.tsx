@@ -6,7 +6,6 @@ import React, {
   useEffect,
 } from 'react';
 
-import api from '../services/api';
 import { useUser } from './user';
 
 interface UserSearchContextData {
@@ -26,6 +25,8 @@ const UserSearchProvider: React.FC = ({ children }) => {
 
   useEffect(() => {
     if (!searchTerm) setResults(backupResults);
+
+    handleSearch();
   }, [searchTerm]);
 
   const handleSearch = useCallback(async () => {
@@ -34,15 +35,11 @@ const UserSearchProvider: React.FC = ({ children }) => {
       return (
         result.name.first.match(regex) ||
         result.name.last.match(regex) ||
-        result.gender.match(regex)
+        result.gender === searchTerm.toLowerCase()
       );
     });
 
-    if (filteredResults.length < 1) {
-      setResults(backupResults);
-    } else {
-      setResults(filteredResults);
-    }
+    setResults(filteredResults);
   }, [searchTerm]);
 
   return (

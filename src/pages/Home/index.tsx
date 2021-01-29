@@ -66,7 +66,7 @@ const Home: React.FC = () => {
       <Header />
       <MainContainer>
         <Input
-          placeholder="Search..."
+          placeholder="Search by name, gender and nationality..."
           value={searchTerm}
           onChange={e => setSearchTerm(e.target.value)}
           handleSearch={handleSearch}
