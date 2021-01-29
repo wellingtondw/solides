@@ -58,7 +58,7 @@ function useUserSearch(): UserSearchContextData {
   const context = useContext(UserSearchContext);
 
   if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error('useSearch must be used within an userSearchProvider');
   }
 
   return context;
