@@ -4,7 +4,7 @@ import { IoSearchOutline } from 'react-icons/io5';
 import * as S from './styles';
 
 export type InputProps = {
-  handleSearch?: () => void;
+  handleSearch(): void;
 } & InputHTMLAttributes<HTMLInputElement>;
 
 const Input: React.FC<InputProps> = ({ handleSearch, style, ...rest }) => {

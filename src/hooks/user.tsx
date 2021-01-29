@@ -15,10 +15,12 @@ export interface Results {
 interface UserContextData {
   handleGetUserInfo(): Promise<void>;
   results: Results[];
+  backupResults: Results[];
   loading: boolean;
   page: number;
   perPage: number;
   setPage(p: number): void;
+  setResults(data: Results[]): void;
 }
 
 const PER_PAGE = 50;
@@ -27,6 +29,7 @@ const UserContext = createContext<UserContextData>({} as UserContextData);
 
 const UserProvider: React.FC = ({ children }) => {
   const [results, setResults] = useState<Results[]>([]);
+  const [backupResults, setBackupResults] = useState<Results[]>([]);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
 
@@ -35,6 +38,7 @@ const UserProvider: React.FC = ({ children }) => {
     const { data } = await api.get(`?page=${page}&results=${PER_PAGE}`);
 
     setResults([...results, ...data.results]);
+    setBackupResults([...results, ...data.results]);
     setLoading(false);
   }, [page]);
 
@@ -47,6 +51,8 @@ const UserProvider: React.FC = ({ children }) => {
         perPage: 50,
         page,
         setPage,
+        setResults,
+        backupResults,
       }}
     >
       {children}

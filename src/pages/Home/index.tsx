@@ -9,6 +9,8 @@ import UserTable from '../../components/UserTable';
 
 import { MainContainer } from '../../styles/common';
 
+import { useUserSearch } from '../../hooks/userSearch';
+
 import * as S from './styles';
 
 const Home: React.FC = () => {
@@ -44,6 +46,8 @@ const Home: React.FC = () => {
   //   });
   // }, []);
 
+  const { searchTerm, setSearchTerm, handleSearch } = useUserSearch();
+
   return (
     <S.Container>
       <PatientModal
@@ -62,8 +66,10 @@ const Home: React.FC = () => {
       <Header />
       <MainContainer>
         <Input
-          placeholder="Pesquisar..."
-          handleSearch={() => setShowModal(true)}
+          placeholder="Search..."
+          value={searchTerm}
+          onChange={e => setSearchTerm(e.target.value)}
+          handleSearch={handleSearch}
         />
         <UserTable />
         {loading && <Loading />}
