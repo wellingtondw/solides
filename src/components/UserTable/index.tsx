@@ -4,6 +4,8 @@ import Table from '../Table';
 import { useUser } from '../../hooks/user';
 
 import Button from '../Button';
+import PatientModal from '../PatientModal';
+
 import * as S from './styles';
 
 export type tableDataProps = {
@@ -27,6 +29,7 @@ const headers = [
 
 const UserTable: React.FC = () => {
   const [data, setData] = useState<tableDataProps[][]>([]);
+  const [showModal, setShowModal] = useState(false);
   const {
     handleGetUserInfo,
     results,
@@ -66,7 +69,7 @@ const UserTable: React.FC = () => {
         {
           value: (
             <S.ActionsContainer>
-              <Button onClick={() => console.log('Ok')}>Visualizar</Button>
+              <Button onClick={() => setShowModal(true)}>Visualizar</Button>
             </S.ActionsContainer>
           ),
         },
@@ -86,6 +89,10 @@ const UserTable: React.FC = () => {
 
   return (
     <>
+      <PatientModal
+        showModal={showModal}
+        handleCloseModal={() => setShowModal(false)}
+      />
       {data.length < 1 && !loading ? (
         <S.Info>Nenhum resultado encontrado</S.Info>
       ) : (

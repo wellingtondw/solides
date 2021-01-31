@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FaUser } from 'react-icons/fa';
 import * as S from './styles';
 
@@ -17,22 +17,36 @@ export type ModalDataProps = {
   id: string;
 };
 
-export type PatientModalProps = ModalDataProps & ModalBaseProps;
+export type PatientModalProps = ModalBaseProps;
 
 const PatientModal: React.FC<PatientModalProps> = ({
   showModal = false,
   handleCloseModal,
-  image,
-  name,
-  email,
-  gender,
-  birthDate,
-  tel,
-  nationality,
-  address,
-  id,
   ...rest
 }) => {
+  const [data, setData] = useState<ModalDataProps>({
+    address: '',
+    birthDate: '',
+    email: '',
+    gender: '',
+    id: '',
+    image: '',
+    name: '',
+    nationality: '',
+    tel: '',
+  });
+
+  const {
+    address,
+    birthDate,
+    email,
+    gender,
+    id,
+    image,
+    name,
+    nationality,
+    tel,
+  } = data;
   return (
     <ModalBase
       showModal={showModal}

@@ -10,6 +10,8 @@ export const Overlay = styled.div<ModalProps>`
     align-items: center;
     justify-content: center;
     position: fixed;
+    left: 0;
+    top: 0;
     width: 100%;
     height: 100vh;
     background-color: rgba(0, 0, 0, 0.3);

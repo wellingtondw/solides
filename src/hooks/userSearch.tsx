@@ -39,6 +39,8 @@ const UserSearchProvider: React.FC = ({ children }) => {
       );
     });
 
+    if (!searchTerm) return;
+
     setResults(filteredResults);
   }, [searchTerm]);
 
