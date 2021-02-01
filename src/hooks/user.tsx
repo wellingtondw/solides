@@ -21,6 +21,7 @@ export interface Results {
     city: string;
     country: string;
     postcode: string;
+    state: string;
   };
   id: {
     value: string;

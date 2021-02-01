@@ -37,6 +37,7 @@ const defaultCurrentData = {
     city: '',
     country: '',
     postcode: '',
+    state: '',
   },
   name: {
     first: '',
@@ -56,7 +57,7 @@ const defaultCurrentData = {
 const UserTable: React.FC = () => {
   const [data, setData] = useState<tableDataProps[][]>([]);
   const [currentData, setCurrentData] = useState<Results>(defaultCurrentData);
-  const [showModal, setShowModal] = useState(true);
+  const [showModal, setShowModal] = useState(false);
 
   const {
     handleGetUserInfo,

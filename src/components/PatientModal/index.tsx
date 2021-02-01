@@ -5,6 +5,7 @@ import * as S from './styles';
 import ModalBase, { ModalBaseProps } from '../ModalBase';
 import PatientInfo from '../PatientInfo';
 import { Results } from '../../hooks/user';
+import formattedDateFn from '../../utils/formattedDate';
 
 export type PatientModalProps = {
   data: Results;
@@ -17,9 +18,7 @@ const PatientModal: React.FC<PatientModalProps> = ({
   ...rest
 }) => {
   const formattedName = `${data.name.first} ${data.name.last}`;
-  const formattedDate = new Date(data.registered.date).toLocaleDateString(
-    'en-US',
-  );
+  const formattedDate = formattedDateFn(data.registered.date);
 
   return (
     <ModalBase
@@ -49,7 +48,9 @@ const PatientModal: React.FC<PatientModalProps> = ({
             <PatientInfo label="Gender" text={data.gender} />
             <PatientInfo label="Birth Date" text={formattedDate} />
             <S.Divisor style={{ borderColor: '#fff' }} />
-            <PatientInfo label="Location" text={data.location.city} />
+            <PatientInfo label="Country" text={data.location.country} />
+            <PatientInfo label="State" text={data.location.state} />
+            <PatientInfo label="City" text={data.location.city} />
             <PatientInfo label="Nationality" text={data.nat} />
           </S.Wrapper>
         </S.RightContainer>
