@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import Table from '../Table';
 
-import { useUser } from '../../hooks/user';
+import { Results, useUser } from '../../hooks/user';
 
 import Button from '../Button';
 import PatientModal from '../PatientModal';
@@ -27,9 +27,37 @@ const headers = [
   },
 ];
 
+const defaultCurrentData = {
+  email: '',
+  gender: '',
+  id: {
+    value: '',
+  },
+  location: {
+    city: '',
+    country: '',
+    postcode: '',
+  },
+  name: {
+    first: '',
+    last: '',
+  },
+  nat: '',
+  phone: '',
+  picture: {
+    large: '',
+  },
+  registered: {
+    age: '',
+    date: '',
+  },
+};
+
 const UserTable: React.FC = () => {
   const [data, setData] = useState<tableDataProps[][]>([]);
-  const [showModal, setShowModal] = useState(false);
+  const [currentData, setCurrentData] = useState<Results>(defaultCurrentData);
+  const [showModal, setShowModal] = useState(true);
+
   const {
     handleGetUserInfo,
     results,
@@ -52,6 +80,16 @@ const UserTable: React.FC = () => {
     setPage(page + 1);
   };
 
+  const handlePatientModal = useCallback(result => {
+    setShowModal(true);
+    setCurrentData(result);
+  }, []);
+
+  const handleCloseModal = useCallback(() => {
+    setShowModal(false);
+    setCurrentData(defaultCurrentData);
+  }, []);
+
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
 
@@ -69,7 +107,9 @@ const UserTable: React.FC = () => {
         {
           value: (
             <S.ActionsContainer>
-              <Button onClick={() => setShowModal(true)}>Visualizar</Button>
+              <Button onClick={() => handlePatientModal(result)}>
+                Visualizar
+              </Button>
             </S.ActionsContainer>
           ),
         },
@@ -80,7 +120,9 @@ const UserTable: React.FC = () => {
   }, [results]);
 
   useEffect(() => {
-    handleGetUserInfo();
+    handleGetUserInfo({
+      inc: 'email,gender,id,location,name,nat,phone,picture,registered',
+    });
   }, [handleGetUserInfo]);
 
   useEffect(() => {
@@ -91,7 +133,8 @@ const UserTable: React.FC = () => {
     <>
       <PatientModal
         showModal={showModal}
-        handleCloseModal={() => setShowModal(false)}
+        data={currentData}
+        handleCloseModal={handleCloseModal}
       />
       {data.length < 1 && !loading ? (
         <S.Info>Nenhum resultado encontrado</S.Info>

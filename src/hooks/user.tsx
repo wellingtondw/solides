@@ -8,12 +8,31 @@ export interface Results {
   };
   gender: string;
   registered: {
+    age: string;
     date: string;
+  };
+  email: string;
+  picture: {
+    large: string;
+  };
+  phone: string;
+  nat: string;
+  location: {
+    city: string;
+    country: string;
+    postcode: string;
+  };
+  id: {
+    value: string;
   };
 }
 
+interface Variables {
+  inc: string;
+}
+
 interface UserContextData {
-  handleGetUserInfo(): Promise<void>;
+  handleGetUserInfo(variables?: Variables): Promise<void>;
   results: Results[];
   backupResults: Results[];
   loading: boolean;
@@ -33,14 +52,19 @@ const UserProvider: React.FC = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
 
-  const handleGetUserInfo = useCallback(async () => {
-    setLoading(true);
-    const { data } = await api.get(`?page=${page}&results=${PER_PAGE}`);
+  const handleGetUserInfo = useCallback(
+    async variables => {
+      setLoading(true);
+      const { data } = await api.get(
+        `?page=${page}&results=${PER_PAGE}&inc=${variables.inc}`,
+      );
 
-    setResults([...results, ...data.results]);
-    setBackupResults([...results, ...data.results]);
-    setLoading(false);
-  }, [page]);
+      setResults([...results, ...data.results]);
+      setBackupResults([...results, ...data.results]);
+      setLoading(false);
+    },
+    [page],
+  );
 
   return (
     <UserContext.Provider

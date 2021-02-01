@@ -1,52 +1,26 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { FaUser } from 'react-icons/fa';
 import * as S from './styles';
 
 import ModalBase, { ModalBaseProps } from '../ModalBase';
 import PatientInfo from '../PatientInfo';
+import { Results } from '../../hooks/user';
 
-export type ModalDataProps = {
-  image: string;
-  name: string;
-  email: string;
-  gender: string;
-  birthDate: string;
-  tel: string;
-  nationality: string;
-  address: string;
-  id: string;
-};
-
-export type PatientModalProps = ModalBaseProps;
+export type PatientModalProps = {
+  data: Results;
+} & ModalBaseProps;
 
 const PatientModal: React.FC<PatientModalProps> = ({
   showModal = false,
   handleCloseModal,
+  data,
   ...rest
 }) => {
-  const [data, setData] = useState<ModalDataProps>({
-    address: '',
-    birthDate: '',
-    email: '',
-    gender: '',
-    id: '',
-    image: '',
-    name: '',
-    nationality: '',
-    tel: '',
-  });
+  const formattedName = `${data.name.first} ${data.name.last}`;
+  const formattedDate = new Date(data.registered.date).toLocaleDateString(
+    'en-US',
+  );
 
-  const {
-    address,
-    birthDate,
-    email,
-    gender,
-    id,
-    image,
-    name,
-    nationality,
-    tel,
-  } = data;
   return (
     <ModalBase
       showModal={showModal}
@@ -55,28 +29,28 @@ const PatientModal: React.FC<PatientModalProps> = ({
     >
       <S.Container>
         <S.ImageContainer>
-          {image.length ? (
-            <S.Image src={image} />
+          {data.picture.large ? (
+            <S.Image src={data.picture.large} />
           ) : (
             <FaUser size={40} color="#fff" />
           )}
         </S.ImageContainer>
         <S.LeftContainer>
           <S.Wrapper>
-            <PatientInfo label="ID" text={id} />
-            <PatientInfo label="Name" text={name} />
+            <PatientInfo label="ID" text={data.id.value} />
+            <PatientInfo label="Name" text={formattedName} />
             <S.Divisor />
-            <PatientInfo label="Telefone" text={tel} />
-            <PatientInfo label="Email" text={email} />
+            <PatientInfo label="Phone" text={data.phone} />
+            <PatientInfo label="Email" text={data.email} />
           </S.Wrapper>
         </S.LeftContainer>
         <S.RightContainer>
           <S.Wrapper>
-            <PatientInfo label="Gênero" text={gender} />
-            <PatientInfo label="Data de nascimento" text={birthDate} />
+            <PatientInfo label="Gender" text={data.gender} />
+            <PatientInfo label="Birth Date" text={formattedDate} />
             <S.Divisor style={{ borderColor: '#fff' }} />
-            <PatientInfo label="Endereço" text={address} />
-            <PatientInfo label="Nacionalidade" text={nationality} />
+            <PatientInfo label="Location" text={data.location.city} />
+            <PatientInfo label="Nationality" text={data.nat} />
           </S.Wrapper>
         </S.RightContainer>
       </S.Container>
