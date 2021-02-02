@@ -5,7 +5,7 @@ import { Results, useUser } from '../../hooks/user';
 
 import Button from '../Button';
 import PatientModal from '../PatientModal';
-
+import formattedDateFn from '../../utils/formattedDate';
 import * as S from './styles';
 
 export type tableDataProps = {
@@ -104,7 +104,7 @@ const UserTable: React.FC = () => {
       return [
         { value: `${result.name.first} ${result.name.last}` },
         { value: result.gender },
-        { value: result.registered.date },
+        { value: formattedDateFn(result.registered.date) },
         {
           value: (
             <S.ActionsContainer>
